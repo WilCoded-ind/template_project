@@ -1,11 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <div class="flex items-center justify-between">
+            <h2 class="text-xl font-semibold leading-tight text-gray-800">
                 {{ __('Manajemen Permission') }}
             </h2>
             @if(auth()->user()->hasPermission('permission.create'))
-            <a href="{{ route('permissions.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <a href="{{ route('permissions.create') }}" class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
                 Tambah Permission Baru
             </a>
             @endif
@@ -18,28 +18,28 @@
             <div id="alertContainer"></div>
 
             @if(session('success'))
-                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+                <div class="relative px-4 py-3 mb-4 text-green-700 bg-green-100 border border-green-400 rounded" role="alert">
                     <span class="block sm:inline">{{ session('success') }}</span>
                 </div>
             @endif
 
             @if(session('error'))
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                <div class="relative px-4 py-3 mb-4 text-red-700 bg-red-100 border border-red-400 rounded" role="alert">
                     <span class="block sm:inline">{{ session('error') }}</span>
                 </div>
             @endif
 
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <!-- Tabel DataTable -->
                     <div>
                         <table id="permissionsTable" class="w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="px-1 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
-                                    <th class="px-1 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Tampilan</th>
-                                    <th class="px-1 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deskripsi</th>
-                                    <th class="px-1 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                                    <th class="px-1 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Nama</th>
+                                    <th class="px-1 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Nama Tampilan</th>
+                                    <th class="px-1 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Deskripsi</th>
+                                    <th class="px-1 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">

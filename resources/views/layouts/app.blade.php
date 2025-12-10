@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -7,17 +8,18 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <!-- FontAwesome -->
+        <!-- Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        <!-- Scripts -->
+        <!-- Vite - CSS & JS -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-        <!-- Additional Styles (untuk DataTables CSS) -->
+        <!-- Additional Styles -->
         @stack('styles')
     </head>
     <body class="font-sans antialiased">
@@ -27,19 +29,26 @@
             <!-- Page Heading -->
             @isset($header)
                 <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>
                 </header>
             @endisset
 
-            <!-- Page Content -->
-            <main>
+            <!-- Main Content -->
+            <main class="py-6">
                 {{ $slot }}
             </main>
         </div>
 
-        <!-- Additional Scripts (untuk jQuery & DataTables JS) -->
+        <!-- jQuery (for DataTables) -->
+        <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+        <!-- DataTables JS -->
+        <script src="https://cdn.datatables.net/1.13.0/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.0/js/dataTables.bootstrap5.min.js"></script>
+
+        <!-- Additional Scripts -->
         @stack('scripts')
     </body>
 </html>

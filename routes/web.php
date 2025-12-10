@@ -21,18 +21,18 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-// User Management Routes
-Route::middleware('permission:user.view')->group(function () {
-    Route::post('users/bulk-action', [UserController::class, 'bulkAction'])->name('users.bulk-action');
-    Route::get('users/export', [UserController::class, 'export'])->name('users.export');    
-    Route::resource('users', UserController::class);
-});
+    // User Management Routes
+    Route::middleware('permission:user.view')->group(function () {
+        Route::post('users/bulk-action', [UserController::class, 'bulkAction'])->name('users.bulk-action');
+        Route::get('users/export', [UserController::class, 'export'])->name('users.export');
+        Route::resource('users', UserController::class);
+    });
 
     // Role Management Routes
-Route::middleware('permission:role.view')->group(function () {
-    Route::get('roles/export', [RoleController::class, 'export'])->name('roles.export');    
-    Route::resource('roles', RoleController::class);
-});
+    Route::middleware('permission:role.view')->group(function () {
+        Route::get('roles/export', [RoleController::class, 'export'])->name('roles.export');
+        Route::resource('roles', RoleController::class);
+    });
 
     // Menu Management Routes
     Route::middleware('permission:menu.view')->group(function () {
@@ -45,8 +45,8 @@ Route::middleware('permission:role.view')->group(function () {
     });
 
     // Folder Management Routes
-    Route::middleware('permission:baru.view')->group(function () {
-        Route::resource('baru', BaruController::class);
+    Route::middleware('permission:barus.view')->group(function () {
+        Route::resource('barus', BaruController::class);
     });
 });
 
