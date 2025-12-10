@@ -16,24 +16,32 @@
 
                 {{-- Loop menu hasil project kamu --}}
                 @foreach ($menus as $menu)
-                    @if (isset($menu['children']) && count($menu['children']))
+                    @if ($menu->children && $menu->children->isNotEmpty())
                         {{-- treeview --}}
-                        <li class="nav-item {{ $menu['active'] ? 'menu-open' : '' }}">
-                            <a href="#" class="nav-link {{ $menu['active'] ? 'active' : '' }}">
-                                <i class="nav-icon {{ $menu['icon'] }}"></i>
+                        <li class="nav-item {{ $menu->active ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ $menu->active ? 'active' : '' }}">
+                                <i class="nav-icon {{ $menu->icon }}"></i>
                                 <p>
-                                    {{ $menu['title'] }}
+                                    {{ $menu->display_name }}
                                     <i class="nav-arrow fas fa-chevron-right"></i>
                                 </p>
                             </a>
 
                             <ul class="nav nav-treeview">
-                                @foreach ($menu['children'] as $child)
+                                @foreach ($menu->children as $child)
+                                    @php
+                                        $childUrl = '#';
+                                        if ($child->route && Route::has($child->route)) {
+                                            $childUrl = route($child->route);
+                                        } elseif ($child->url) {
+                                            $childUrl = $child->url;
+                                        }
+                                    @endphp
                                     <li class="nav-item">
-                                        <a href="{{ $child['url'] }}"
-                                            class="nav-link {{ $child['active'] ? 'active' : '' }}">
+                                        <a href="{{ $childUrl }}"
+                                            class="nav-link {{ $child->active ? 'active' : '' }}">
                                             <i class="nav-icon fas fa-circle"></i>
-                                            <p>{{ $child['title'] }}</p>
+                                            <p>{{ $child->display_name }}</p>
                                         </a>
                                     </li>
                                 @endforeach
@@ -41,10 +49,18 @@
                         </li>
                     @else
                         {{-- single menu --}}
+                        @php
+                            $menuUrl = '#';
+                            if ($menu->route && Route::has($menu->route)) {
+                                $menuUrl = route($menu->route);
+                            } elseif ($menu->url) {
+                                $menuUrl = $menu->url;
+                            }
+                        @endphp
                         <li class="nav-item">
-                            <a href="{{ $menu['url'] }}" class="nav-link {{ $menu['active'] ? 'active' : '' }}">
-                                <i class="nav-icon {{ $menu['icon'] }}"></i>
-                                <p>{{ $menu['title'] }}</p>
+                            <a href="{{ $menuUrl }}" class="nav-link {{ $menu->active ? 'active' : '' }}">
+                                <i class="nav-icon {{ $menu->icon }}"></i>
+                                <p>{{ $menu->display_name }}</p>
                             </a>
                         </li>
                     @endif

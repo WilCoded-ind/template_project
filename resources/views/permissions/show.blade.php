@@ -1,16 +1,18 @@
-<x-app-layout>
+<x-adminlte-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Permission Details') }}
             </h2>
             <div class="flex gap-2">
-                @if(auth()->user()->hasPermission('permission.edit'))
-                <a href="{{ route('permissions.edit', $permission) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Edit Permission
-                </a>
+                @if (auth()->user()->hasPermission('permission.edit'))
+                    <a href="{{ route('permissions.edit', $permission) }}"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        Edit Permission
+                    </a>
                 @endif
-                <a href="{{ route('permissions.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                <a href="{{ route('permissions.index') }}"
+                    class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
                     Back to List
                 </a>
             </div>
@@ -26,7 +28,8 @@
                         <div>
                             <p class="text-sm font-medium text-gray-500">Name</p>
                             <p class="mt-1">
-                                <span class="px-2 inline-flex text-sm leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
+                                <span
+                                    class="px-2 inline-flex text-sm leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
                                     {{ $permission->name }}
                                 </span>
                             </p>
@@ -53,11 +56,12 @@
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <h3 class="text-lg font-semibold mb-4">Roles with this Permission ({{ $permission->roles->count() }})</h3>
+                    <h3 class="text-lg font-semibold mb-4">Roles with this Permission
+                        ({{ $permission->roles->count() }})</h3>
 
-                    @if($permission->roles->count() > 0)
+                    @if ($permission->roles->count() > 0)
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            @foreach($permission->roles as $role)
+                            @foreach ($permission->roles as $role)
                                 <div class="border rounded p-4">
                                     <h4 class="font-semibold text-blue-600">{{ $role->display_name }}</h4>
                                     <p class="text-sm text-gray-600 mt-1">{{ $role->description }}</p>
@@ -72,4 +76,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-adminlte-layout>
