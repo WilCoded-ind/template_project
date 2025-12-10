@@ -1,21 +1,11 @@
 <x-adminlte-layout>
-    <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                {{ __('Manajemen Menu') }}
-            </h2>
-            @if (auth()->user()->hasPermission('menu.create'))
-                <a href="{{ route('menus.create') }}"
-                    class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
-                    Tambah Menu Baru
-                </a>
-            @endif
-        </div>
-    </x-slot>
+    <div>
+        <h1 class="my-1 text-3xl font-semibold text-gray-900">{{ __('Manajemen Menu') }}</h1>
+    </div>
 
     <div class="py-12">
         <div class="w-full mx-auto sm:px-6 lg:px-8">
-            <!-- Wadah alert untuk notifikasi AJAX -->
+            <!-- Success/Error Messages -->
             <div id="alertContainer"></div>
 
             @if (session('success'))
@@ -26,39 +16,45 @@
             @endif
 
             @if (session('error'))
-                <div class="relative px-4 py-3 mb-4 text-red-700 bg-red-100 border border-red-400 rounded"
-                    role="alert">
+                <div class="relative px-4 py-3 mb-4 text-red-700 bg-red-100 border border-red-400 rounded" role="alert">
                     <span class="block sm:inline">{{ session('error') }}</span>
                 </div>
             @endif
 
-            <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
+            <div class="mb-3 d-flex justify-content-start">
+                @if (auth()->user()->hasPermission('menu.create'))
+                    <a href="{{ route('menus.create') }}" class="btn btn-secondary">Tambah Menu Baru</a>
+                @endif
+            </div>
+
+            <div class="overflow-hidden bg-white shadow-md sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <!-- Tabel DataTable -->
+
+                    <!-- DataTable -->
                     <div>
-                        <table id="menusTable" class="w-full divide-y divide-gray-200">
+                        <table id="menusTable" class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th
-                                        class="px-1 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                                        class="px-1 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                         Menu</th>
                                     <th
-                                        class="px-1 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                                        class="px-1 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                         Icon</th>
                                     <th
-                                        class="px-1 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                                        class="px-1 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                         Route/URL</th>
                                     <th
-                                        class="px-1 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                                        class="px-1 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                         Permission</th>
                                     <th
-                                        class="px-1 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                                        class="px-1 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                         Urutan</th>
                                     <th
-                                        class="px-1 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                                        class="px-1 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                         Status</th>
                                     <th
-                                        class="px-1 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                                        class="px-1 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                         Aksi</th>
                                 </tr>
                             </thead>
@@ -72,7 +68,7 @@
     </div>
 
     @push('styles')
-        <!-- CSS DataTables -->
+        <!-- DataTables CSS -->
         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
     @endpush
@@ -80,7 +76,7 @@
     @push('scripts')
         <!-- jQuery -->
         <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-        <!-- JS DataTables -->
+        <!-- DataTables JS -->
         <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
 
@@ -88,7 +84,7 @@
             let table;
 
             $(document).ready(function() {
-                // Inisialisasi DataTable dengan konfigurasi server-side
+                // Initialize DataTable
                 table = $('#menusTable').DataTable({
                     processing: true,
                     serverSide: true,
@@ -96,49 +92,40 @@
                         url: "{{ route('menus.index') }}",
                         data: function(d) {}
                     },
-                    // Konfigurasi kolom-kolom tabel
                     columns: [{
                             data: 'display_name',
-                            name: 'display_name',
-                            className: 'text-left'
+                            name: 'display_name'
                         },
                         {
                             data: 'icon',
-                            name: 'icon',
-                            className: 'text-left'
+                            name: 'icon'
                         },
                         {
                             data: 'route_url',
-                            name: 'route_url',
-                            className: 'text-left'
+                            name: 'route_url'
                         },
                         {
                             data: 'permission_name',
-                            name: 'permission_name',
-                            className: 'text-left'
+                            name: 'permission_name'
                         },
                         {
                             data: 'order',
-                            name: 'order',
-                            className: 'text-left'
+                            name: 'order'
                         },
                         {
                             data: 'is_active',
-                            name: 'is_active',
-                            className: 'text-left'
+                            name: 'is_active'
                         },
                         {
                             data: 'action',
                             name: 'action',
                             orderable: false,
-                            searchable: false,
-                            className: 'text-left'
+                            searchable: false
                         }
                     ],
-                    // Pengaturan sorting, pagination, dan responsif
                     order: [
                         [4, 'asc']
-                    ], // Sortir berdasarkan urutan secara ascending
+                    ], // Sort by order ascending
                     pageLength: 10,
                     lengthMenu: [
                         [10, 25, 50, 100],
@@ -146,25 +133,24 @@
                     ],
                     responsive: true,
                     language: {
-                        search: "Cari:",
-                        lengthMenu: "Tampilkan _MENU_ entri",
-                        info: "Menampilkan _START_ hingga _END_ dari _TOTAL_ menu",
-                        infoEmpty: "Menampilkan 0 hingga 0 dari 0 menu",
-                        infoFiltered: "(difilter dari _MAX_ total menu)",
+                        search: "Search:",
+                        lengthMenu: "Show _MENU_ entries",
+                        info: "Showing _START_ to _END_ of _TOTAL_ menus",
+                        infoEmpty: "Showing 0 to 0 of 0 menus",
+                        infoFiltered: "(filtered from _MAX_ total menus)",
                         paginate: {
-                            first: "Pertama",
-                            last: "Terakhir",
-                            next: "Selanjutnya",
-                            previous: "Sebelumnya"
+                            first: "First",
+                            last: "Last",
+                            next: "Next",
+                            previous: "Previous"
                         }
                     }
                 });
-
             });
 
-            // Fungsi untuk menghapus menu
+            // Delete Menu Function
             function deleteMenu(menuId) {
-                if (!confirm('Apakah Anda yakin ingin menghapus menu ini?')) {
+                if (!confirm('Are you sure you want to delete this menu?')) {
                     return;
                 }
 
@@ -179,13 +165,13 @@
                         table.ajax.reload();
                     },
                     error: function(xhr) {
-                        let message = xhr.responseJSON?.message || 'Terjadi kesalahan';
+                        let message = xhr.responseJSON?.message || 'An error occurred';
                         showAlert(message, 'error');
                     }
                 });
             }
 
-            // Fungsi untuk menampilkan alert notifikasi
+            // Show Alert Function
             function showAlert(message, type) {
                 let alertClass = type === 'success' ?
                     'bg-green-100 border-green-400 text-green-700' :
@@ -202,7 +188,7 @@
 
                 $('#alertContainer').html(alertHtml);
 
-                // Hilangkan alert otomatis setelah 5 detik
+                // Auto remove after 5 seconds
                 setTimeout(function() {
                     $('#alertContainer').html('');
                 }, 5000);

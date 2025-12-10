@@ -1,9 +1,7 @@
 <x-adminlte-layout>
-    <x-slot name="header">
+    <div>
         <div class="flex items-center justify-between">
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                {{ __('Role Details') }}
-            </h2>
+            <h1 class="my-1 text-3xl font-semibold text-gray-900">{{ __('Role Details') }}</h1>
             <div class="flex gap-2">
                 @if (auth()->user()->hasPermission('role.edit'))
                     <a href="{{ route('roles.edit', $role) }}"
@@ -17,7 +15,7 @@
                 </a>
             </div>
         </div>
-    </x-slot>
+    </div>
 
     <div class="py-12">
         <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">

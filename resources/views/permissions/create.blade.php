@@ -1,9 +1,7 @@
 <x-adminlte-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Create New Permission') }}
-        </h2>
-    </x-slot>
+    <div>
+        <h1 class="my-1 text-3xl font-semibold text-gray-900">{{ __('Create New Permission') }}</h1>
+    </div>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

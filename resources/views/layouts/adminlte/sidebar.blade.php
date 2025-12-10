@@ -1,10 +1,8 @@
 <aside class="shadow app-sidebar bg-body-secondary" data-bs-theme="dark">
     {{-- Sidebar Brand --}}
     <div class="sidebar-brand">
-        <a href="/" class="brand-link">
-            <img src="{{ asset('adminlte/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
-                class="shadow opacity-75 brand-image">
-            <span class="brand-text fw-light">AdminLTE 4</span>
+        <a href="{{ route('dashboard') }}">
+            <x-application-logo class="block w-auto text-white fill-current h-9" />
         </a>
     </div>
 

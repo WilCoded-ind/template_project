@@ -1,21 +1,11 @@
 <x-adminlte-layout>
-    <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                {{ __('Manajemen Role') }}
-            </h2>
-            @if (auth()->user()->hasPermission('role.create'))
-                <a href="{{ route('roles.create') }}"
-                    class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
-                    Tambah Role Baru
-                </a>
-            @endif
-        </div>
-    </x-slot>
+    <div>
+        <h1 class="my-1 text-3xl font-semibold text-gray-900">{{ __('Manajemen Role') }}</h1>
+    </div>
 
     <div class="py-12">
         <div class="w-full mx-auto sm:px-6 lg:px-8">
-            <!-- Wadah alert untuk notifikasi AJAX -->
+            <!-- Success/Error Messages -->
             <div id="alertContainer"></div>
 
             @if (session('success'))
@@ -26,33 +16,39 @@
             @endif
 
             @if (session('error'))
-                <div class="relative px-4 py-3 mb-4 text-red-700 bg-red-100 border border-red-400 rounded"
-                    role="alert">
+                <div class="relative px-4 py-3 mb-4 text-red-700 bg-red-100 border border-red-400 rounded" role="alert">
                     <span class="block sm:inline">{{ session('error') }}</span>
                 </div>
             @endif
 
-            <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
+            <div class="mb-3 d-flex justify-content-start">
+                @if (auth()->user()->hasPermission('role.create'))
+                    <a href="{{ route('roles.create') }}" class="btn btn-secondary">Tambah Role Baru</a>
+                @endif
+            </div>
+
+            <div class="overflow-hidden bg-white shadow-md sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <!-- Tabel DataTable -->
+
+                    <!-- DataTable -->
                     <div>
-                        <table id="rolesTable" class="w-full divide-y divide-gray-200">
+                        <table id="rolesTable" class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th
-                                        class="px-1 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                                        class="px-1 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                         Nama</th>
                                     <th
-                                        class="px-1 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                                        class="px-1 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                         Nama Tampilan</th>
                                     <th
-                                        class="px-1 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                                        class="px-1 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                         Jumlah Users</th>
                                     <th
-                                        class="px-1 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                                        class="px-1 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                         Jumlah Permissions</th>
                                     <th
-                                        class="px-1 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                                        class="px-1 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                         Aksi</th>
                                 </tr>
                             </thead>
@@ -66,7 +62,7 @@
     </div>
 
     @push('styles')
-        <!-- CSS DataTables -->
+        <!-- DataTables CSS -->
         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
     @endpush
@@ -74,7 +70,7 @@
     @push('scripts')
         <!-- jQuery -->
         <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-        <!-- JS DataTables -->
+        <!-- DataTables JS -->
         <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
 
@@ -82,7 +78,7 @@
             let table;
 
             $(document).ready(function() {
-                // Inisialisasi DataTable dengan konfigurasi server-side
+                // Initialize DataTable
                 table = $('#rolesTable').DataTable({
                     processing: true,
                     serverSide: true,
@@ -90,39 +86,32 @@
                         url: "{{ route('roles.index') }}",
                         data: function(d) {}
                     },
-                    // Konfigurasi kolom-kolom tabel
                     columns: [{
                             data: 'name',
-                            name: 'name',
-                            className: 'text-left'
+                            name: 'name'
                         },
                         {
                             data: 'display_name',
-                            name: 'display_name',
-                            className: 'text-left'
+                            name: 'display_name'
                         },
                         {
                             data: 'users_count',
-                            name: 'users_count',
-                            className: 'text-left'
+                            name: 'users_count'
                         },
                         {
                             data: 'permissions_count',
-                            name: 'permissions_count',
-                            className: 'text-left'
+                            name: 'permissions_count'
                         },
                         {
                             data: 'action',
                             name: 'action',
                             orderable: false,
-                            searchable: false,
-                            className: 'text-left'
+                            searchable: false
                         }
                     ],
-                    // Pengaturan sorting, pagination, dan responsif
                     order: [
                         [0, 'asc']
-                    ], // Sortir berdasarkan nama secara ascending
+                    ], // Sort by name ascending
                     pageLength: 10,
                     lengthMenu: [
                         [10, 25, 50, 100],
@@ -143,7 +132,6 @@
                         }
                     }
                 });
-
             });
 
             // Delete Role Function
