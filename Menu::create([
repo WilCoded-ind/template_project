@@ -1,0 +1,15 @@
+[90m= [39m[34;4mApp\Models\Menu[39;24m {#6535
+    [34mid[39m: [35m2[39m,
+    [34mname[39m: "[32muser-management[39m",
+    [34mdisplay_name[39m: "[32mUser Management[39m",
+    [34micon[39m: "[32mfas fa-users-cog[39m",
+    [34mroute[39m: [36mnull[39m,
+    [34murl[39m: [36mnull[39m,
+    [34mparent_id[39m: [36mnull[39m,
+    [34morder[39m: [35m2[39m,
+    [34mis_active[39m: [35m1[39m,
+    [34mpermission_id[39m: [35m1[39m,
+    [34mcreated_at[39m: "[32m2025-12-09 15:00:27[39m",
+    [34mupdated_at[39m: "[32m2025-12-09 15:00:27[39m",
+  }
+

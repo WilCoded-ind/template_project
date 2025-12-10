@@ -4,7 +4,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\MenuController;
-use App\Http\Controllers\FolderController;
+use App\Http\Controllers\BaruController;
+use App\Http\Controllers\PermissionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -20,24 +21,32 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // User Management Routes
-    Route::middleware('permission:user.view')->group(function () {
-        Route::resource('users', UserController::class);
-    });
+// User Management Routes
+Route::middleware('permission:user.view')->group(function () {
+    Route::post('users/bulk-action', [UserController::class, 'bulkAction'])->name('users.bulk-action');
+    Route::get('users/export', [UserController::class, 'export'])->name('users.export');    
+    Route::resource('users', UserController::class);
+});
 
     // Role Management Routes
-    Route::middleware('permission:role.view')->group(function () {
-        Route::resource('roles', RoleController::class);
-    });
+Route::middleware('permission:role.view')->group(function () {
+    Route::get('roles/export', [RoleController::class, 'export'])->name('roles.export');    
+    Route::resource('roles', RoleController::class);
+});
 
     // Menu Management Routes
     Route::middleware('permission:menu.view')->group(function () {
         Route::resource('menus', MenuController::class);
     });
 
+    // Permission Management Routes
+    Route::middleware(['auth', 'permission:permission.view'])->group(function () {
+        Route::resource('permissions', PermissionController::class);
+    });
+
     // Folder Management Routes
-    Route::middleware('permission:folder.view')->group(function () {
-        Route::resource('folders', FolderController::class);
+    Route::middleware('permission:baru.view')->group(function () {
+        Route::resource('baru', BaruController::class);
     });
 });
 

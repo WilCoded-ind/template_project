@@ -13,7 +13,10 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="w-full mx-auto sm:px-6 lg:px-8">
+            <!-- Alert Container untuk notifikasi AJAX -->
+            <div id="alertContainer"></div>
+
             @if(session('success'))
                 <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
                     <span class="block sm:inline">{{ session('success') }}</span>
@@ -28,50 +31,126 @@
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Display Name</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Users Count</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Permissions Count</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            @forelse($roles as $role)
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ $role->name }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ $role->display_name }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ $role->users_count }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ $role->permissions_count }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <a href="{{ route('roles.show', $role) }}" class="text-blue-600 hover:text-blue-900 mr-3">View</a>
-                                    @if(auth()->user()->hasPermission('role.edit'))
-                                    <a href="{{ route('roles.edit', $role) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
-                                    @endif
-                                    @if(auth()->user()->hasPermission('role.delete'))
-                                    <form action="{{ route('roles.destroy', $role) }}" method="POST" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Are you sure?')">Delete</button>
-                                    </form>
-                                    @endif
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="5" class="px-6 py-4 text-center text-gray-500">No roles found.</td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-
-                    <div class="mt-4">
-                        {{ $roles->links() }}
+                    <!-- DataTable -->
+                    <div>
+                        <table id="rolesTable" class="w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-1 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                    <th class="px-1 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Display Name</th>
+                                    <th class="px-1 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Users Count</th>
+                                    <th class="px-1 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Permissions Count</th>
+                                    <th class="px-1 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    @push('styles')
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+    @endpush
+
+    @push('scripts')
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+
+    <script>
+        let table;
+        
+        $(document).ready(function() {
+            // Initialize DataTable
+            table = $('#rolesTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('roles.index') }}",
+                    data: function(d) {
+                    }
+                },
+columns: [
+    { data: 'name', name: 'name', className: 'text-left' },
+    { data: 'display_name', name: 'display_name', className: 'text-left' },
+    { data: 'users_count', name: 'users_count', className: 'text-left' },
+    { data: 'permissions_count', name: 'permissions_count', className: 'text-left' },
+    { data: 'action', name: 'action', orderable: false, searchable: false, className: 'text-left' }
+],
+                order: [[0, 'asc']], // Sort by name ascending
+                pageLength: 10,
+                lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
+                responsive: true,
+                language: {
+                    search: "Search:",
+                    lengthMenu: "Show _MENU_ entries",
+                    info: "Showing _START_ to _END_ of _TOTAL_ roles",
+                    infoEmpty: "Showing 0 to 0 of 0 roles",
+                    infoFiltered: "(filtered from _MAX_ total roles)",
+                    paginate: {
+                        first: "First",
+                        last: "Last",
+                        next: "Next",
+                        previous: "Previous"
+                    }
+                }
+            });
+
+        });
+
+        // Delete Role Function
+        function deleteRole(roleId) {
+            if (!confirm('Are you sure you want to delete this role?')) {
+                return;
+            }
+
+            $.ajax({
+                url: `/roles/${roleId}`,
+                method: 'DELETE',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    showAlert(response.message, 'success');
+                    table.ajax.reload();
+                },
+                error: function(xhr) {
+                    let message = xhr.responseJSON?.message || 'An error occurred';
+                    showAlert(message, 'error');
+                }
+            });
+        }
+
+        // Show Alert Function
+        function showAlert(message, type) {
+            let alertClass = type === 'success' 
+                ? 'bg-green-100 border-green-400 text-green-700' 
+                : 'bg-red-100 border-red-400 text-red-700';
+            
+            let alertHtml = `
+                <div class="${alertClass} border px-4 py-3 rounded relative mb-4" role="alert">
+                    <span class="block sm:inline">${message}</span>
+                    <button onclick="this.parentElement.remove()" class="absolute top-0 right-0 px-4 py-3">
+                        <span class="text-2xl">&times;</span>
+                    </button>
+                </div>
+            `;
+            
+            $('#alertContainer').html(alertHtml);
+            
+            // Auto remove after 5 seconds
+            setTimeout(function() {
+                $('#alertContainer').html('');
+            }, 5000);
+        }
+    </script>
+    @endpush
 </x-app-layout>

@@ -31,6 +31,10 @@ class RolePermissionSeeder extends Seeder
             ['name' => 'menu.edit', 'display_name' => 'Edit Menu', 'description' => 'Can edit menu'],
             ['name' => 'menu.delete', 'display_name' => 'Delete Menu', 'description' => 'Can delete menu'],
 
+            ['name' => 'permission.create', 'display_name' => 'Create Permission', 'description' => 'Can create new permission'],
+            ['name' => 'permission.edit', 'display_name' => 'Edit Permission', 'description' => 'Can edit permission'],
+            ['name' => 'permission.delete', 'display_name' => 'Delete Permission', 'description' => 'Can delete permission'],
+
             ['name' => 'dashboard.view', 'display_name' => 'View Dashboard', 'description' => 'Can view dashboard'],
         ];
 

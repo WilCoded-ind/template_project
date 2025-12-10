@@ -1,0 +1,29 @@
+[90m= [39m[34;4mIlluminate\Database\Eloquent\Collection[39;24m {#6099
+    [34mall[39m: [
+      [34;4mApp\Models\Permission[39;24m {#6105
+        [34mid[39m: [35m14[39m,
+        [34mname[39m: "[32mpermission.create[39m",
+        [34mdisplay_name[39m: "[32mCreate Permission[39m",
+        [34mdescription[39m: "[32mCan create new permission[39m",
+        [34mcreated_at[39m: "[32m2025-12-09 15:00:26[39m",
+        [34mupdated_at[39m: "[32m2025-12-09 15:00:26[39m",
+      },
+      [34;4mApp\Models\Permission[39;24m {#6106
+        [34mid[39m: [35m16[39m,
+        [34mname[39m: "[32mpermission.delete[39m",
+        [34mdisplay_name[39m: "[32mDelete Permission[39m",
+        [34mdescription[39m: "[32mCan delete permission[39m",
+        [34mcreated_at[39m: "[32m2025-12-09 15:00:26[39m",
+        [34mupdated_at[39m: "[32m2025-12-09 15:00:26[39m",
+      },
+      [34;4mApp\Models\Permission[39;24m {#6120
+        [34mid[39m: [35m15[39m,
+        [34mname[39m: "[32mpermission.edit[39m",
+        [34mdisplay_name[39m: "[32mEdit Permission[39m",
+        [34mdescription[39m: "[32mCan edit permission[39m",
+        [34mcreated_at[39m: "[32m2025-12-09 15:00:26[39m",
+        [34mupdated_at[39m: "[32m2025-12-09 15:00:26[39m",
+      },
+    ],
+  }
+
