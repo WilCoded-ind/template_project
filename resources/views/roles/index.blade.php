@@ -2,11 +2,11 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Roles Management') }}
+                {{ __('Manajemen Role') }}
             </h2>
             @if(auth()->user()->hasPermission('role.create'))
             <a href="{{ route('roles.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Add New Role
+                Tambah Role Baru
             </a>
             @endif
         </div>
@@ -14,7 +14,7 @@
 
     <div class="py-12">
         <div class="w-full mx-auto sm:px-6 lg:px-8">
-            <!-- Alert Container untuk notifikasi AJAX -->
+            <!-- Wadah alert untuk notifikasi AJAX -->
             <div id="alertContainer"></div>
 
             @if(session('success'))
@@ -31,16 +31,16 @@
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <!-- DataTable -->
+                    <!-- Tabel DataTable -->
                     <div>
                         <table id="rolesTable" class="w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="px-1 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                    <th class="px-1 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Display Name</th>
-                                    <th class="px-1 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Users Count</th>
-                                    <th class="px-1 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Permissions Count</th>
-                                    <th class="px-1 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    <th class="px-1 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
+                                    <th class="px-1 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Tampilan</th>
+                                    <th class="px-1 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jumlah Users</th>
+                                    <th class="px-1 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jumlah Permissions</th>
+                                    <th class="px-1 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
@@ -53,7 +53,7 @@
     </div>
 
     @push('styles')
-    <!-- DataTables CSS -->
+    <!-- CSS DataTables -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
     @endpush
@@ -61,15 +61,15 @@
     @push('scripts')
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <!-- DataTables JS -->
+    <!-- JS DataTables -->
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
 
     <script>
         let table;
-        
+
         $(document).ready(function() {
-            // Initialize DataTable
+            // Inisialisasi DataTable dengan konfigurasi server-side
             table = $('#rolesTable').DataTable({
                 processing: true,
                 serverSide: true,
@@ -78,14 +78,16 @@
                     data: function(d) {
                     }
                 },
-columns: [
-    { data: 'name', name: 'name', className: 'text-left' },
-    { data: 'display_name', name: 'display_name', className: 'text-left' },
-    { data: 'users_count', name: 'users_count', className: 'text-left' },
-    { data: 'permissions_count', name: 'permissions_count', className: 'text-left' },
-    { data: 'action', name: 'action', orderable: false, searchable: false, className: 'text-left' }
-],
-                order: [[0, 'asc']], // Sort by name ascending
+                // Konfigurasi kolom-kolom tabel
+                columns: [
+                    { data: 'name', name: 'name', className: 'text-left' },
+                    { data: 'display_name', name: 'display_name', className: 'text-left' },
+                    { data: 'users_count', name: 'users_count', className: 'text-left' },
+                    { data: 'permissions_count', name: 'permissions_count', className: 'text-left' },
+                    { data: 'action', name: 'action', orderable: false, searchable: false, className: 'text-left' }
+                ],
+                // Pengaturan sorting, pagination, dan responsif
+                order: [[0, 'asc']], // Sortir berdasarkan nama secara ascending
                 pageLength: 10,
                 lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
                 responsive: true,
@@ -131,10 +133,10 @@ columns: [
 
         // Show Alert Function
         function showAlert(message, type) {
-            let alertClass = type === 'success' 
-                ? 'bg-green-100 border-green-400 text-green-700' 
+            let alertClass = type === 'success'
+                ? 'bg-green-100 border-green-400 text-green-700'
                 : 'bg-red-100 border-red-400 text-red-700';
-            
+
             let alertHtml = `
                 <div class="${alertClass} border px-4 py-3 rounded relative mb-4" role="alert">
                     <span class="block sm:inline">${message}</span>
@@ -143,9 +145,9 @@ columns: [
                     </button>
                 </div>
             `;
-            
+
             $('#alertContainer').html(alertHtml);
-            
+
             // Auto remove after 5 seconds
             setTimeout(function() {
                 $('#alertContainer').html('');

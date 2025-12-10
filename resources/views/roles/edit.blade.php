@@ -14,16 +14,16 @@
                         @method('PUT')
 
                         <div class="mb-4">
-                            <label for="name" class="block text-sm font-medium text-gray-700">Name (slug)</label>
+                            <label for="name" class="block text-sm font-medium text-gray-700">Nama (slug)</label>
                             <input type="text" name="name" id="name" value="{{ old('name', $role->name) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
-                            <p class="mt-1 text-sm text-gray-500">Use lowercase letters, numbers, and dashes only (e.g., super-admin)</p>
+                            <p class="mt-1 text-sm text-gray-500">Gunakan huruf kecil, angka, dan tanda hubung (contoh: super-admin)</p>
                             @error('name')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <div class="mb-4">
-                            <label for="display_name" class="block text-sm font-medium text-gray-700">Display Name</label>
+                            <label for="display_name" class="block text-sm font-medium text-gray-700">Nama Tampilan</label>
                             <input type="text" name="display_name" id="display_name" value="{{ old('display_name', $role->display_name) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
                             @error('display_name')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -31,7 +31,7 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                            <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi</label>
                             <textarea name="description" id="description" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('description', $role->description) }}</textarea>
                             @error('description')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -49,7 +49,7 @@
                                     <div class="flex items-center justify-between mb-2">
                                         <h4 class="font-semibold capitalize">{{ $group }}</h4>
                                         <button type="button" class="text-xs text-blue-600 hover:text-blue-800" onclick="toggleGroup('{{ $group }}')">
-                                            Select All
+                                            Pilih Semua
                                         </button>
                                     </div>
                                     <div class="grid grid-cols-2 md:grid-cols-4 gap-2" data-group="{{ $group }}">
@@ -66,7 +66,7 @@
 
                         <div class="flex items-center justify-end mt-6">
                             <a href="{{ route('roles.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mr-2">
-                                Cancel
+                                Batal
                             </a>
                             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                 Update Role

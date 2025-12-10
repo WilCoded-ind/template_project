@@ -1,16 +1,16 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <div class="flex items-center justify-between">
+            <h2 class="text-xl font-semibold leading-tight text-gray-800">
                 {{ __('Role Details') }}
             </h2>
             <div class="flex gap-2">
                 @if(auth()->user()->hasPermission('role.edit'))
-                <a href="{{ route('roles.edit', $role) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <a href="{{ route('roles.edit', $role) }}" class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
                     Edit Role
                 </a>
                 @endif
-                <a href="{{ route('roles.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                <a href="{{ route('roles.index') }}" class="px-4 py-2 font-bold text-white bg-gray-500 rounded hover:bg-gray-700">
                     Back to List
                 </a>
             </div>
@@ -18,10 +18,10 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
+        <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="mb-6 overflow-hidden bg-white shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <h3 class="text-lg font-semibold mb-4">Role Information</h3>
+                    <h3 class="mb-4 text-lg font-semibold">Role Information</h3>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <p class="text-sm font-medium text-gray-500">Name</p>
@@ -55,9 +55,9 @@
                 </div>
             </div>
 
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
+            <div class="mb-6 overflow-hidden bg-white shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <h3 class="text-lg font-semibold mb-4">Permissions ({{ $role->permissions->count() }})</h3>
+                    <h3 class="mb-4 text-lg font-semibold">Permissions ({{ $role->permissions->count() }})</h3>
 
                     @php
                         $groupedPermissions = $role->permissions->groupBy(function($permission) {
@@ -66,11 +66,11 @@
                     @endphp
 
                     @if($groupedPermissions->count() > 0)
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                             @foreach($groupedPermissions as $group => $permissions)
-                                <div class="border rounded p-4">
-                                    <h4 class="font-semibold mb-2 capitalize text-blue-600">{{ $group }}</h4>
-                                    <ul class="list-disc list-inside text-sm space-y-1">
+                                <div class="p-4 border rounded">
+                                    <h4 class="mb-2 font-semibold text-blue-600 capitalize">{{ $group }}</h4>
+                                    <ul class="space-y-1 text-sm list-disc list-inside">
                                         @foreach($permissions as $permission)
                                             <li class="text-gray-700">{{ $permission->display_name }}</li>
                                         @endforeach
@@ -84,18 +84,18 @@
                 </div>
             </div>
 
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <h3 class="text-lg font-semibold mb-4">Users with this Role ({{ $role->users->count() }})</h3>
+                    <h3 class="mb-4 text-lg font-semibold">Users with this Role ({{ $role->users->count() }})</h3>
 
                     @if($role->users->count() > 0)
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Name</th>
+                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Username</th>
+                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Status</th>
+                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Actions</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
@@ -105,12 +105,12 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $user->username }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         @if($user->is_active)
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                                            <span class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full">Active</span>
                                         @else
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Inactive</span>
+                                            <span class="inline-flex px-2 text-xs font-semibold leading-5 text-red-800 bg-red-100 rounded-full">Inactive</span>
                                         @endif
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <td class="px-6 py-4 text-sm font-medium whitespace-nowrap">
                                         @if(auth()->user()->hasPermission('user.view'))
                                         <a href="{{ route('users.show', $user) }}" class="text-blue-600 hover:text-blue-900">View</a>
                                         @endif

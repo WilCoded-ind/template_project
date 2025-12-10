@@ -1,11 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <div class="flex items-center justify-between">
+            <h2 class="text-xl font-semibold leading-tight text-gray-800">
                 {{ __('Users Management') }}
             </h2>
             @if(auth()->user()->hasPermission('user.create'))
-            <a href="{{ route('users.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <a href="{{ route('users.create') }}" class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
                 Add New User
             </a>
             @endif
@@ -13,30 +13,30 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="w-full  mx-auto sm:px-6 lg:px-8">
+        <div class="w-full mx-auto sm:px-6 lg:px-8">
             <!-- Success/Error Messages -->
             <div id="alertContainer"></div>
 
             @if(session('success'))
-                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+                <div class="relative px-4 py-3 mb-4 text-green-700 bg-green-100 border border-green-400 rounded" role="alert">
                     <span class="block sm:inline">{{ session('success') }}</span>
                 </div>
             @endif
 
             @if(session('error'))
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                <div class="relative px-4 py-3 mb-4 text-red-700 bg-red-100 border border-red-400 rounded" role="alert">
                     <span class="block sm:inline">{{ session('error') }}</span>
                 </div>
             @endif
 
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <!-- Filter Section -->
-                    {{-- <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                    {{-- <div class="grid grid-cols-1 gap-4 mb-4 md:grid-cols-4">
                         <!-- Role Filter -->
                         <div>
-                            <label for="roleFilter" class="block text-sm font-medium text-gray-700 mb-1">Filter by Role</label>
-                            <select id="roleFilter" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                            <label for="roleFilter" class="block mb-1 text-sm font-medium text-gray-700">Filter by Role</label>
+                            <select id="roleFilter" class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                 <option value="">All Roles</option>
                                 @foreach($roles as $role)
                                     <option value="{{ $role->id }}">{{ $role->display_name }}</option>
@@ -46,8 +46,8 @@
 
                         <!-- Status Filter -->
                         <div>
-                            <label for="statusFilter" class="block text-sm font-medium text-gray-700 mb-1">Filter by Status</label>
-                            <select id="statusFilter" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                            <label for="statusFilter" class="block mb-1 text-sm font-medium text-gray-700">Filter by Status</label>
+                            <select id="statusFilter" class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                 <option value="">All Status</option>
                                 <option value="active">Active</option>
                                 <option value="inactive">Inactive</option>
@@ -56,8 +56,8 @@
 
                         <!-- Bulk Actions -->
                         <div>
-                            <label for="bulkAction" class="block text-sm font-medium text-gray-700 mb-1">Bulk Actions</label>
-                            <select id="bulkAction" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                            <label for="bulkAction" class="block mb-1 text-sm font-medium text-gray-700">Bulk Actions</label>
+                            <select id="bulkAction" class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                 <option value="">Select Action</option>
                                 <option value="activate">Activate</option>
                                 <option value="deactivate">Deactivate</option>
@@ -67,26 +67,26 @@
 
                         <!-- Action Buttons -->
                         <div class="flex items-end gap-2">
-                            <button id="applyBulkAction" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+                            <button id="applyBulkAction" class="px-4 py-2 font-bold text-white bg-orange-500 rounded hover:bg-orange-700">
                                 Apply
                             </button>
-                            <button id="exportBtn" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                            <button id="exportBtn" class="px-4 py-2 font-bold text-white bg-green-500 rounded hover:bg-green-700">
                                 Export CSV
                             </button>
                         </div>
                     </div> --}}
 
                     <!-- DataTable -->
-                    <div class="overflow-x-auto">
+                    <div>
                         <table id="usersTable" class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="px-1 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                    <th class="px-1 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
-                                    <th class="px-1 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Roles</th>
-                                    <th class="px-1 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                    <th class="px-1 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Created At</th>
-                                    <th class="px-1 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    <th class="px-1 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">Name</th>
+                                    <th class="px-1 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">Username</th>
+                                    <th class="px-1 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">Roles</th>
+                                    <th class="px-1 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">Status</th>
+                                    <th class="px-1 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">Created At</th>
+                                    <th class="px-1 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">Actions</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
@@ -113,7 +113,7 @@
 
     <script>
         let table;
-        
+
         $(document).ready(function() {
             // Initialize DataTable
             table = $('#usersTable').DataTable({
@@ -176,7 +176,7 @@
             $('#applyBulkAction').on('click', function() {
                 let action = $('#bulkAction').val();
                 let selectedIds = [];
-                
+
                 $('.user-checkbox:checked').each(function() {
                     selectedIds.push($(this).val());
                 });
@@ -220,16 +220,16 @@
             $('#exportBtn').on('click', function() {
                 let url = "{{ route('users.export') }}?";
                 let params = [];
-                
+
                 let search = table.search();
                 if (search) params.push('search=' + encodeURIComponent(search));
-                
+
                 let roleFilter = $('#roleFilter').val();
                 if (roleFilter) params.push('role_filter=' + roleFilter);
-                
+
                 let statusFilter = $('#statusFilter').val();
                 if (statusFilter) params.push('status_filter=' + statusFilter);
-                
+
                 window.location.href = url + params.join('&');
             });
         });
@@ -259,10 +259,10 @@
 
         // Show Alert Function
         function showAlert(message, type) {
-            let alertClass = type === 'success' 
-                ? 'bg-green-100 border-green-400 text-green-700' 
+            let alertClass = type === 'success'
+                ? 'bg-green-100 border-green-400 text-green-700'
                 : 'bg-red-100 border-red-400 text-red-700';
-            
+
             let alertHtml = `
                 <div class="${alertClass} border px-4 py-3 rounded relative mb-4" role="alert">
                     <span class="block sm:inline">${message}</span>
@@ -271,9 +271,9 @@
                     </button>
                 </div>
             `;
-            
+
             $('#alertContainer').html(alertHtml);
-            
+
             // Auto remove after 5 seconds
             setTimeout(function() {
                 $('#alertContainer').html('');
