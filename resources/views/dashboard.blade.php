@@ -1,17 +1,20 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="text-xl font-semibold leading-tight text-gray-800">
-            {{ __('Dashboard') }}
-        </h2>
+<x-adminlte-layout>
+    <x-slot name="header" class="text-2xl">
+        Dashboard
     </x-slot>
 
-    <div class="py-12">
-        <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Dashboard</h3>
+                    </div>
+                    <div class="card-body">
+                        Selamat datang di halaman dashboard!
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-adminlte-layout>

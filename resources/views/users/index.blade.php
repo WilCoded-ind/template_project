@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-adminlte-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
@@ -31,50 +31,6 @@
 
             <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <!-- Filter Section -->
-                    {{-- <div class="grid grid-cols-1 gap-4 mb-4 md:grid-cols-4">
-                        <!-- Role Filter -->
-                        <div>
-                            <label for="roleFilter" class="block mb-1 text-sm font-medium text-gray-700">Filter by Role</label>
-                            <select id="roleFilter" class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                <option value="">All Roles</option>
-                                @foreach($roles as $role)
-                                    <option value="{{ $role->id }}">{{ $role->display_name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <!-- Status Filter -->
-                        <div>
-                            <label for="statusFilter" class="block mb-1 text-sm font-medium text-gray-700">Filter by Status</label>
-                            <select id="statusFilter" class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                <option value="">All Status</option>
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                            </select>
-                        </div>
-
-                        <!-- Bulk Actions -->
-                        <div>
-                            <label for="bulkAction" class="block mb-1 text-sm font-medium text-gray-700">Bulk Actions</label>
-                            <select id="bulkAction" class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                <option value="">Select Action</option>
-                                <option value="activate">Activate</option>
-                                <option value="deactivate">Deactivate</option>
-                                <option value="delete">Delete</option>
-                            </select>
-                        </div>
-
-                        <!-- Action Buttons -->
-                        <div class="flex items-end gap-2">
-                            <button id="applyBulkAction" class="px-4 py-2 font-bold text-white bg-orange-500 rounded hover:bg-orange-700">
-                                Apply
-                            </button>
-                            <button id="exportBtn" class="px-4 py-2 font-bold text-white bg-green-500 rounded hover:bg-green-700">
-                                Export CSV
-                            </button>
-                        </div>
-                    </div> --}}
 
                     <!-- DataTable -->
                     <div>
@@ -281,4 +237,4 @@
         }
     </script>
     @endpush
-</x-app-layout>
+</x-adminlte-layout>
