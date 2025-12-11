@@ -30,7 +30,7 @@
     @stack('styles')
 </head>
 
-<body class="layout-fixed sidebar-expand-lg">
+<body class="bg-gray-100 layout-fixed sidebar-expand-lg">
     <div class="app-wrapper">
         {{-- Header --}}
         @include('layouts.adminlte.header')

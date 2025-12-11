@@ -27,27 +27,13 @@ class PermissionController extends Controller
             ->addIndexColumn()
 
             // Edit kolom untuk menampilkan data dengan format yang diinginkan
-            ->editColumn('name', fn($permission) => $permission->name)
-            ->editColumn('display_name', fn($permission) => $permission->display_name)
-            ->editColumn('description', fn($permission) => $permission->description ?? '-')
+            ->editColumn('name', fn ($permission) => $permission->name)
+            ->editColumn('display_name', fn ($permission) => $permission->display_name)
+            ->editColumn('description', fn ($permission) => $permission->description ?? '-')
 
             // Tambah kolom action dengan tombol view, edit, delete
             ->addColumn('action', function ($permission) {
-                $actions = '<div class="flex justify-start gap-2">';
-
-                $actions .= '<a href="' . route('permissions.show', $permission) . '" class="text-blue-600 hover:text-blue-900">View</a>';
-
-                if (auth()->user()->hasPermission('permission.edit')) {
-                    $actions .= '<a href="' . route('permissions.edit', $permission) . '" class="text-indigo-600 hover:text-indigo-900">Edit</a>';
-                }
-
-                if (auth()->user()->hasPermission('permission.delete')) {
-                    $actions .= '<button onclick="deletePermission(' . $permission->id . ')" class="text-red-600 hover:text-red-900">Delete</button>';
-                }
-
-                $actions .= '</div>';
-
-                return $actions;
+                return view('components.permission-actions', ['permission' => $permission])->render();
             })
             ->rawColumns(['action'])
             ->make(true);
@@ -77,7 +63,7 @@ class PermissionController extends Controller
 
             return redirect()->route('permissions.index')->with('success', 'Permission berhasil dibuat.');
         } catch (\Exception $e) {
-            return redirect()->back()->withInput()->with('error', 'Kesalahan: ' . $e->getMessage());
+            return redirect()->back()->withInput()->with('error', 'Kesalahan: '.$e->getMessage());
         }
     }
 
@@ -85,6 +71,7 @@ class PermissionController extends Controller
     public function show(Permission $permission)
     {
         $permission->load('roles');
+
         return view('permissions.show', compact('permission'));
     }
 
@@ -99,7 +86,7 @@ class PermissionController extends Controller
     {
         try {
             $validated = $request->validate([
-                'name' => ['required', 'string', 'max:255', 'regex:/^[a-z0-9._-]+$/', 'unique:permissions,name,' . $permission->id],
+                'name' => ['required', 'string', 'max:255', 'regex:/^[a-z0-9._-]+$/', 'unique:permissions,name,'.$permission->id],
                 'display_name' => ['required', 'string', 'max:255'],
                 'description' => ['nullable', 'string'],
             ]);
@@ -112,7 +99,7 @@ class PermissionController extends Controller
 
             return redirect()->route('permissions.index')->with('success', 'Permission berhasil diperbarui.');
         } catch (\Exception $e) {
-            return redirect()->back()->withInput()->with('error', 'Kesalahan: ' . $e->getMessage());
+            return redirect()->back()->withInput()->with('error', 'Kesalahan: '.$e->getMessage());
         }
     }
 

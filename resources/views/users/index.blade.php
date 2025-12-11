@@ -38,7 +38,7 @@
                                 <tr>
                                     <th
                                         class="px-1 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
-                                        Name</th>
+                                        Nama</th>
                                     <th
                                         class="px-1 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                         Username</th>
@@ -56,7 +56,7 @@
                                         Actions</th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
+                            <tbody class="text-center bg-white divide-y divide-gray-200">
                             </tbody>
                         </table>
                     </div>
@@ -95,7 +95,7 @@
                     },
                     columns: [{
                             data: 'name',
-                            name: 'name'
+                            name: 'name',
                         },
                         {
                             data: 'username',

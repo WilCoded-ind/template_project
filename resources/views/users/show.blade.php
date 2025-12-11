@@ -2,7 +2,8 @@
     <div>
         <div class="flex items-center justify-between">
             <h1 class="my-1 text-3xl font-semibold text-gray-900">{{ __('User Details') }}</h1>
-            <a href="{{ route('users.index') }}" class="px-4 py-2 font-bold text-white bg-gray-500 rounded hover:bg-gray-700">
+            <a href="{{ route('users.index') }}"
+                class="px-4 py-2 font-bold text-white bg-gray-500 rounded hover:bg-gray-700">
                 Back to List
             </a>
         </div>
@@ -26,10 +27,12 @@
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Status</label>
                                 <p class="mt-1 text-sm">
-                                    @if($user->is_active)
-                                        <span class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full">Active</span>
+                                    @if ($user->is_active)
+                                        <span
+                                            class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full">Active</span>
                                     @else
-                                        <span class="inline-flex px-2 text-xs font-semibold leading-5 text-red-800 bg-red-100 rounded-full">Inactive</span>
+                                        <span
+                                            class="inline-flex px-2 text-xs font-semibold leading-5 text-red-800 bg-red-100 rounded-full">Inactive</span>
                                     @endif
                                 </p>
                             </div>
@@ -44,7 +47,8 @@
                         <h3 class="mb-2 text-lg font-semibold">Assigned Roles</h3>
                         <div class="flex flex-wrap gap-2">
                             @forelse($user->roles as $role)
-                                <span class="inline-flex px-3 py-1 text-sm font-semibold leading-5 text-blue-800 bg-blue-100 rounded-full">
+                                <span
+                                    class="inline-flex px-3 py-1 text-sm font-semibold leading-5 text-blue-800 bg-blue-100 rounded-full">
                                     {{ $role->display_name }}
                                 </span>
                             @empty
@@ -57,16 +61,17 @@
                         <h3 class="mb-2 text-lg font-semibold">Permissions</h3>
                         <div class="grid grid-cols-3 gap-2">
                             @php
-                                $permissions = $user->getPermissions()->groupBy(function($permission) {
+                                $permissions = $user->getPermissions()->groupBy(function ($permission) {
                                     return explode('.', $permission->name)[0];
                                 });
                             @endphp
 
                             @forelse($permissions as $module => $perms)
                                 <div class="p-3 border rounded">
-                                    <h4 class="mb-2 text-sm font-semibold text-gray-700 capitalize">{{ $module }}</h4>
+                                    <h4 class="mb-2 text-sm font-semibold text-gray-700 capitalize">{{ $module }}
+                                    </h4>
                                     <ul class="text-sm text-gray-600 list-disc list-inside">
-                                        @foreach($perms as $perm)
+                                        @foreach ($perms as $perm)
                                             <li>{{ $perm->display_name }}</li>
                                         @endforeach
                                     </ul>
@@ -78,10 +83,11 @@
                     </div>
 
                     <div class="flex items-center justify-end mt-6">
-                        @if(auth()->user()->hasPermission('user.edit'))
-                        <a href="{{ route('users.edit', $user) }}" class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
-                            Edit User
-                        </a>
+                        @if (auth()->user()->hasPermission('user.edit'))
+                            <a href="{{ route('users.edit', $user) }}"
+                                class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
+                                Edit User
+                            </a>
                         @endif
                     </div>
                 </div>

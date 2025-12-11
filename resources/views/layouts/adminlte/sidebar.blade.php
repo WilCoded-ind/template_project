@@ -15,9 +15,13 @@
                 {{-- Loop menu hasil project kamu --}}
                 @foreach ($menus as $menu)
                     @if ($menu->children && $menu->children->isNotEmpty())
-                        {{-- treeview --}}
-                        <li class="nav-item {{ $menu->active ? 'menu-open' : '' }}">
-                            <a href="#" class="nav-link {{ $menu->active ? 'active' : '' }}">
+                        @php
+                            // Parent dianggap aktif kalau dia aktif atau salah satu child aktif
+                            $isParentActive = $menu->active || $menu->children->contains(fn($c) => $c->active);
+                        @endphp
+
+                        <li class="nav-item {{ $isParentActive ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ $isParentActive ? 'active' : '' }}">
                                 <i class="nav-icon {{ $menu->icon }}"></i>
                                 <p>
                                     {{ $menu->display_name }}
@@ -35,10 +39,10 @@
                                             $childUrl = $child->url;
                                         }
                                     @endphp
-                                    <li class="nav-item">
+                                    <li class="pl-6 nav-item">
                                         <a href="{{ $childUrl }}"
                                             class="nav-link {{ $child->active ? 'active' : '' }}">
-                                            <i class="nav-icon fas fa-circle"></i>
+                                            <i class="nav-icon bi bi-dot"></i>
                                             <p>{{ $child->display_name }}</p>
                                         </a>
                                     </li>

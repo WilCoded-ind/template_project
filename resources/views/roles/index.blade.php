@@ -23,7 +23,7 @@
 
             <div class="mb-3 d-flex justify-content-start">
                 @if (auth()->user()->hasPermission('role.create'))
-                    <a href="{{ route('roles.create') }}" class="btn btn-secondary">Tambah Role Baru</a>
+                    <a href="{{ route('roles.create') }}" class="btn btn-secondary">Add New Role</a>
                 @endif
             </div>
 
@@ -52,7 +52,7 @@
                                         Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
+                            <tbody class="text-center bg-white divide-y divide-gray-200">
                             </tbody>
                         </table>
                     </div>

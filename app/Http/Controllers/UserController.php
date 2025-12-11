@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
@@ -19,6 +18,7 @@ class UserController extends Controller
         }
 
         $roles = Role::all();
+
         return view('users.index', compact('roles'));
     }
 
@@ -32,47 +32,36 @@ class UserController extends Controller
             // Tambah kolom checkbox untuk bulk actions
             ->addColumn('checkbox', function ($user) {
                 if ($user->id === auth()->id()) {
-                    return '<input type="checkbox" disabled class="rounded border-gray-300">';
+                    return '<input type="checkbox" disabled class="border-gray-300 rounded">';
                 }
-                return '<input type="checkbox" name="user_ids[]" value="' . $user->id . '" class="user-checkbox rounded border-gray-300">';
+
+                return '<input type="checkbox" name="user_ids[]" value="'.$user->id.'" class="border-gray-300 rounded user-checkbox">';
             })
             // Tampilkan roles dengan badge
             ->addColumn('roles', function ($user) {
                 $roles = '';
                 foreach ($user->roles as $role) {
-                    $roles .= '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 mr-1 mb-1">' .
-                        $role->display_name .
+                    $roles .= '<span class="inline-flex px-2 mb-1 mr-1 text-xs font-semibold leading-5 text-blue-800 bg-blue-100 rounded-full">'.
+                        $role->display_name.
                         '</span>';
                 }
+
                 return $roles ?: '-';
             })
             // Tampilkan status user (aktif/tidak aktif)
             ->addColumn('status', function ($user) {
                 if ($user->is_active) {
-                    return '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Aktif</span>';
+                    return '<span class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full">Aktif</span>';
                 }
-                return '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Tidak Aktif</span>';
+
+                return '<span class="inline-flex px-2 text-xs font-semibold leading-5 text-red-800 bg-red-100 rounded-full">Tidak Aktif</span>';
             })
             // Tampilkan tanggal pembuatan user
             ->addColumn('created_date', function ($user) {
                 return $user->created_at->format('d M Y H:i');
             })
-            // Tambah kolom action dengan tombol view, edit, delete
             ->addColumn('action', function ($user) {
-                $actions = '<div class="flex gap-2">';
-
-                $actions .= '<a href="' . route('users.show', $user) . '" class="text-blue-600 hover:text-blue-900">Lihat</a>';
-
-                if (auth()->user()->hasPermission('user.edit')) {
-                    $actions .= '<a href="' . route('users.edit', $user) . '" class="text-indigo-600 hover:text-indigo-900">Edit</a>';
-                }
-
-                if (auth()->user()->hasPermission('user.delete') && $user->id !== auth()->id()) {
-                    $actions .= '<button onclick="deleteUser(' . $user->id . ')" class="text-red-600 hover:text-red-900">Hapus</button>';
-                }
-
-                $actions .= '</div>';
-                return $actions;
+                return view('components.user-actions', ['user' => $user])->render();
             })
             ->filter(function ($query) {
                 // Pencarian berdasarkan nama atau username
@@ -104,6 +93,7 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all();
+
         return view('users.create', compact('roles'));
     }
 
@@ -116,7 +106,7 @@ class UserController extends Controller
                 'username' => ['required', 'string', 'max:255', 'unique:users'],
                 'password' => ['required', 'confirmed', 'min:8'],
                 'roles' => ['required', 'array', 'min:1'],
-                'roles.*' => ['exists:roles,id']
+                'roles.*' => ['exists:roles,id'],
             ]);
 
             $user = User::create([
@@ -130,7 +120,7 @@ class UserController extends Controller
 
             return redirect()->route('users.index')->with('success', 'User berhasil dibuat.');
         } catch (\Exception $e) {
-            return redirect()->back()->withInput()->with('error', 'Kesalahan: ' . $e->getMessage());
+            return redirect()->back()->withInput()->with('error', 'Kesalahan: '.$e->getMessage());
         }
     }
 
@@ -138,6 +128,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         $user->load('roles.permissions');
+
         return view('users.show', compact('user'));
     }
 
@@ -146,6 +137,7 @@ class UserController extends Controller
     {
         $roles = Role::all();
         $user->load('roles');
+
         return view('users.edit', compact('user', 'roles'));
     }
 
@@ -155,9 +147,9 @@ class UserController extends Controller
         try {
             $rules = [
                 'name' => ['required', 'string', 'max:255'],
-                'username' => ['required', 'string', 'max:255', 'unique:users,username,' . $user->id],
+                'username' => ['required', 'string', 'max:255', 'unique:users,username,'.$user->id],
                 'roles' => ['required', 'array', 'min:1'],
-                'roles.*' => ['exists:roles,id']
+                'roles.*' => ['exists:roles,id'],
             ];
 
             if ($request->filled('password')) {
@@ -180,7 +172,7 @@ class UserController extends Controller
 
             return redirect()->route('users.index')->with('success', 'User berhasil diperbarui.');
         } catch (\Exception $e) {
-            return redirect()->back()->withInput()->with('error', 'Kesalahan: ' . $e->getMessage());
+            return redirect()->back()->withInput()->with('error', 'Kesalahan: '.$e->getMessage());
         }
     }
 
@@ -191,7 +183,7 @@ class UserController extends Controller
         if ($user->id === auth()->id()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Anda tidak bisa menghapus akun Anda sendiri.'
+                'message' => 'Anda tidak bisa menghapus akun Anda sendiri.',
             ], 403);
         }
 
@@ -199,7 +191,7 @@ class UserController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'User berhasil dihapus.'
+            'message' => 'User berhasil dihapus.',
         ]);
     }
 
@@ -209,7 +201,7 @@ class UserController extends Controller
         $request->validate([
             'action' => 'required|in:delete,activate,deactivate',
             'user_ids' => 'required|array',
-            'user_ids.*' => 'exists:users,id'
+            'user_ids.*' => 'exists:users,id',
         ]);
 
         // Hapus user ID sendiri dari array agar tidak menghapus akun sendiri
@@ -218,28 +210,28 @@ class UserController extends Controller
         if (empty($userIds)) {
             return response()->json([
                 'success' => false,
-                'message' => 'Tidak ada user yang dipilih.'
+                'message' => 'Tidak ada user yang dipilih.',
             ], 400);
         }
 
         switch ($request->action) {
             case 'delete':
                 User::whereIn('id', $userIds)->delete();
-                $message = count($userIds) . ' user berhasil dihapus.';
+                $message = count($userIds).' user berhasil dihapus.';
                 break;
             case 'activate':
                 User::whereIn('id', $userIds)->update(['is_active' => true]);
-                $message = count($userIds) . ' user berhasil diaktifkan.';
+                $message = count($userIds).' user berhasil diaktifkan.';
                 break;
             case 'deactivate':
                 User::whereIn('id', $userIds)->update(['is_active' => false]);
-                $message = count($userIds) . ' user berhasil dinonaktifkan.';
+                $message = count($userIds).' user berhasil dinonaktifkan.';
                 break;
         }
 
         return response()->json([
             'success' => true,
-            'message' => $message
+            'message' => $message,
         ]);
     }
 
@@ -269,7 +261,7 @@ class UserController extends Controller
 
         $users = $query->get();
 
-        $filename = "users_" . date('Y-m-d_His') . ".csv";
+        $filename = 'users_'.date('Y-m-d_His').'.csv';
 
         $headers = [
             'Content-Type' => 'text/csv',
@@ -287,7 +279,7 @@ class UserController extends Controller
                     $user->username,
                     $user->roles->pluck('display_name')->implode(', '),
                     $user->is_active ? 'Active' : 'Inactive',
-                    $user->created_at->format('Y-m-d H:i:s')
+                    $user->created_at->format('Y-m-d H:i:s'),
                 ]);
             }
 

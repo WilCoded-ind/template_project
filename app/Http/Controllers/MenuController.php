@@ -36,14 +36,16 @@ class MenuController extends Controller
                 if ($menu->parent_id !== null) {
                     $indent = '<i class="fas fa-angle-right mr-2 text-gray-400" style="margin-left: 20px;"></i>';
                 }
-                return $indent . $menu->display_name;
+
+                return $indent.$menu->display_name;
             })
 
             // Edit kolom icon
             ->editColumn('icon', function ($menu) {
                 if ($menu->icon) {
-                    return '<i class="' . $menu->icon . '"></i>';
+                    return '<i class="'.$menu->icon.'"></i>';
                 }
+
                 return '-';
             })
 
@@ -55,44 +57,27 @@ class MenuController extends Controller
             // Edit kolom permission
             ->editColumn('permission_name', function ($menu) {
                 if ($menu->permission) {
-                    return '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">' . $menu->permission->display_name . '</span>';
+                    return '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">'.$menu->permission->display_name.'</span>';
                 }
+
                 return '-';
             })
 
             // Edit kolom order
-            ->editColumn('order', fn($menu) => $menu->order)
+            ->editColumn('order', fn ($menu) => $menu->order)
 
             // Edit kolom status
             ->editColumn('is_active', function ($menu) {
                 if ($menu->is_active) {
                     return '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Aktif</span>';
                 }
+
                 return '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Tidak Aktif</span>';
             })
 
             // Tambah kolom action dengan tombol view, edit, delete
             ->addColumn('action', function ($menu) {
-                $actions = '<div class="flex justify-start gap-2">';
-
-                $actions .= '<a href="' . route('menus.show', $menu) . '" class="text-blue-600 hover:text-blue-900">Lihat</a>';
-
-                if (auth()->user()->hasPermission('menu.edit')) {
-                    $actions .= '<a href="' . route('menus.edit', $menu) . '" class="text-indigo-600 hover:text-indigo-900">Edit</a>';
-                }
-
-                if (auth()->user()->hasPermission('menu.delete')) {
-                    // Cek apakah menu adalah parent yang memiliki children
-                    if ($menu->parent_id === null && $menu->children()->count() > 0) {
-                        $actions .= '<button disabled title="Tidak bisa hapus, ada sub-menu" class="text-gray-400 cursor-not-allowed">Hapus</button>';
-                    } else {
-                        $actions .= '<button onclick="deleteMenu(' . $menu->id . ')" class="text-red-600 hover:text-red-900">Hapus</button>';
-                    }
-                }
-
-                $actions .= '</div>';
-
-                return $actions;
+                return view('components.menu-actions', ['menu' => $menu])->render();
             })
             ->rawColumns(['action', 'display_name', 'icon', 'permission_name', 'is_active'])
             ->make(true);
@@ -103,6 +88,7 @@ class MenuController extends Controller
     {
         $permissions = Permission::all();
         $parentMenus = Menu::whereNull('parent_id')->orderBy('order')->get();
+
         return view('menus.create', compact('permissions', 'parentMenus'));
     }
 
@@ -118,7 +104,7 @@ class MenuController extends Controller
                 'url' => ['nullable', 'string', 'max:255'],
                 'parent_id' => ['nullable', 'exists:menus,id'],
                 'order' => ['required', 'integer', 'min:0'],
-                'permission_id' => ['nullable', 'exists:permissions,id']
+                'permission_id' => ['nullable', 'exists:permissions,id'],
             ]);
 
             Menu::create([
@@ -135,7 +121,7 @@ class MenuController extends Controller
 
             return redirect()->route('menus.index')->with('success', 'Menu berhasil dibuat.');
         } catch (\Exception $e) {
-            return redirect()->back()->withInput()->with('error', 'Kesalahan: ' . $e->getMessage());
+            return redirect()->back()->withInput()->with('error', 'Kesalahan: '.$e->getMessage());
         }
     }
 
@@ -143,6 +129,7 @@ class MenuController extends Controller
     public function show(Menu $menu)
     {
         $menu->load('permission', 'parent', 'children');
+
         return view('menus.show', compact('menu'));
     }
 
@@ -154,6 +141,7 @@ class MenuController extends Controller
             ->where('id', '!=', $menu->id)
             ->orderBy('order')
             ->get();
+
         return view('menus.edit', compact('menu', 'permissions', 'parentMenus'));
     }
 
@@ -162,14 +150,14 @@ class MenuController extends Controller
     {
         try {
             $validated = $request->validate([
-                'name' => ['required', 'string', 'max:255', 'unique:menus,name,' . $menu->id],
+                'name' => ['required', 'string', 'max:255', 'unique:menus,name,'.$menu->id],
                 'display_name' => ['required', 'string', 'max:255'],
                 'icon' => ['nullable', 'string', 'max:255'],
                 'route' => ['nullable', 'string', 'max:255'],
                 'url' => ['nullable', 'string', 'max:255'],
                 'parent_id' => ['nullable', 'exists:menus,id'],
                 'order' => ['required', 'integer', 'min:0'],
-                'permission_id' => ['nullable', 'exists:permissions,id']
+                'permission_id' => ['nullable', 'exists:permissions,id'],
             ]);
 
             $menu->update([
@@ -186,7 +174,7 @@ class MenuController extends Controller
 
             return redirect()->route('menus.index')->with('success', 'Menu berhasil diperbarui.');
         } catch (\Exception $e) {
-            return redirect()->back()->withInput()->with('error', 'Kesalahan: ' . $e->getMessage());
+            return redirect()->back()->withInput()->with('error', 'Kesalahan: '.$e->getMessage());
         }
     }
 

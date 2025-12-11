@@ -27,26 +27,12 @@ class RoleController extends Controller
             ->addIndexColumn()
 
             // Edit kolom untuk menampilkan jumlah users dan permissions
-            ->editColumn('users_count', fn($role) => $role->users_count)
-            ->editColumn('permissions_count', fn($role) => $role->permissions_count)
+            ->editColumn('users_count', fn ($role) => $role->users_count)
+            ->editColumn('permissions_count', fn ($role) => $role->permissions_count)
 
             // Tambah kolom action dengan tombol view, edit, delete
             ->addColumn('action', function ($role) {
-                $actions = '<div class="flex justify-start gap-2">';
-
-                $actions .= '<a href="' . route('roles.show', $role) . '" class="text-blue-600 hover:text-blue-900">Lihat</a>';
-
-                if (auth()->user()->hasPermission('role.edit')) {
-                    $actions .= '<a href="' . route('roles.edit', $role) . '" class="text-indigo-600 hover:text-indigo-900">Edit</a>';
-                }
-
-                if (auth()->user()->hasPermission('role.delete')) {
-                    $actions .= '<button onclick="deleteRole(' . $role->id . ')" class="text-red-600 hover:text-red-900">Hapus</button>';
-                }
-
-                $actions .= '</div>';
-
-                return $actions;
+                return view('components.role-actions', ['role' => $role])->render();
             })
             ->rawColumns(['action'])
             ->make(true);
@@ -104,7 +90,7 @@ class RoleController extends Controller
     public function update(Request $request, Role $role)
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255', 'alpha_dash', 'unique:roles,name,' . $role->id],
+            'name' => ['required', 'string', 'max:255', 'alpha_dash', 'unique:roles,name,'.$role->id],
             'display_name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'permissions' => ['required', 'array', 'min:1'],
@@ -157,7 +143,7 @@ class RoleController extends Controller
 
         $roles = $query->get();
 
-        $filename = 'roles_' . date('Y-m-d_His') . '.csv';
+        $filename = 'roles_'.date('Y-m-d_His').'.csv';
 
         $headers = [
             'Content-Type' => 'text/csv',
